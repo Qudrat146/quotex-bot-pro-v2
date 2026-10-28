@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>QUOTEX AI BOT PRO</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#060a1a;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:15px}
+.card{width:100%;max-width:420px;background:#0f1530;border:2px solid #00ff88;border-radius:20px;padding:20px}
+.logo{text-align:center;margin-bottom:15px}.logo h1{color:#00ff88;font-size:22px}
+.tabs{display:flex;background:#1a2140;border-radius:12px;padding:4px;margin-bottom:18px}
+.tab{flex:1;padding:10px;text-align:center;border-radius:8px;cursor:pointer;font-weight:bold}.tab.active{background:#00ff88;color:#000}.tab.inactive{color:#8a94b5}
+.input{width:100%;padding:14px;background:#1a2140;border:1px solid #2a355e;border-radius:12px;color:#fff;margin-bottom:12px}
+.btn{width:100%;padding:14px;border:none;border-radius:12px;font-weight:bold;cursor:pointer}
+.btn-green{background:linear-gradient(90deg,#00ff88,#00d4ff);color:#000;margin-bottom:10px}
+.btn-wa{background:#25D366;color:#fff}
+.hidden{display:none}
+.price{font-size:32px;color:#00ff88;text-align:center}.timer{text-align:center;color:#ffcc00;margin:8px}
+.action{font-size:36px;font-weight:bold;margin:20px 0;padding:20px;border-radius:15px;text-align:center}
+.buy{background:rgba(0,255,136,.2);color:#00ff88;border:2px solid #00ff88}
+.sell{background:rgba(255,50,50,.2);color:#ff5050;border:2px solid #ff5050}
+.wait{background:rgba(255,204,0,.2);color:#ffcc00;border:2px solid #ffcc00}
+</style></head><body>
+<div class="card">
+<div id="auth">
+<div class="logo"><h1>⚡ QUOTEX AI BOT PRO</h1><p>Real Market Analysis</p></div>
+<div class="tabs"><div class="tab active" id="lt" onclick="tab('login')">Sign In</div><div class="tab inactive" id="st" onclick="tab('signup')">Sign Up</div></div>
+<div id="lf"><input class="input" id="le" type="email" placeholder="Email"><input class="input" id="lp" type="password" placeholder="Password"><button class="btn btn-green" onclick="login()">SIGN IN</button></div>
+<div id="sf" class="hidden"><input class="input" id="sn" placeholder="Full Name"><input class="input" id="se" type="email" placeholder="Email"><input class="input" id="sp" type="password" placeholder="Password"><button class="btn btn-green" onclick="signup()">CREATE ACCOUNT</button></div>
+</div>
+<div id="codeDiv" class="hidden">
+<div class="logo"><h1>📲 VERIFICATION</h1><p>Join WhatsApp Channel to get Code</p></div>
+<button class="btn btn-wa" onclick="window.open('https://whatsapp.com/channel/','_blank')">JOIN WHATSAPP CHANNEL</button>
+<div style="border:1.5px dashed #00ff88;border-radius:12px;padding:12px;margin-top:12px">
+<p style="text-align:center;font-size:12px;color:#8a94b5;margin-bottom:8px">Code only in WhatsApp Pinned Message</p>
+<input class="input" id="wc" placeholder="Enter Channel Code"><button class="btn btn-green" onclick="unlock()">UNLOCK PRO</button>
+</div></div>
+<div id="botDiv" class="hidden">
+<div class="logo"><h1>📊 LIVE BOT</h1></div>
+<div class="price" id="pr">$1.08452</div><div class="timer" id="tm">02:00</div><div id="ac" class="action wait">ANALYZING...</div>
+<button class="btn btn-green" onclick="location.reload()">LOGOUT</button>
+</div></div>
+<script>
+function tab(t){document.getElementById('lt').className=t=='login'?'tab active':'tab inactive';document.getElementById('st').className=t=='signup'?'tab active':'tab inactive';document.getElementById('lf').classList.toggle('hidden',t!='login');document.getElementById('sf').classList.toggle('hidden',t!='signup');}
+function signup(){const n=sn.value.trim(),e=se.value.trim(),p=sp.value;if(!n||!e||p.length<6){alert('Fill all');return;}localStorage.setItem('q_user',JSON.stringify({name:n,email:e,pass:p,un:false}));showCode();}
+function login(){const e=le.value.trim(),p=lp.value;const s=JSON.parse(localStorage.getItem('q_user')||'null');if(s&&s.email==e&&s.pass==p){if(s.un)showBot();else showCode();}else if(e&&p.length>=6){localStorage.setItem('q_user',JSON.stringify({name:'User',email:e,pass:p,un:false}));showCode();}else alert('Please Sign Up first');}
+function showCode(){auth.classList.add('hidden');codeDiv.classList.remove('hidden');}
+function unlock(){if(wc.value.trim().toUpperCase()=='QUOTEX2026'){let u=JSON.parse(localStorage.getItem('q_user'));u.un=true;localStorage.setItem('q_user',JSON.stringify(u));showBot();}else alert('Wrong Code! Get from WhatsApp Channel');}
+function showBot(){auth.classList.add('hidden');codeDiv.classList.add('hidden');botDiv.classList.remove('hidden');let sec=120;setInterval(()=>{sec--;if(sec<0)sec=120;let m=String(Math.floor(sec/60)).padStart(2,'0'),s=String(sec%60).padStart(2,'0');tm.innerText=m+':'+s;pr.innerText='$1.08'+(450+Math.floor(Math.random()*150));if(sec%120==0){const r=Math.random();if(r>0.6){ac.className='action buy';ac.innerText='BUY 📈';}else if(r>0.3){ac.className='action sell';ac.innerText='SELL 📉';}else{ac.className='action wait';ac.innerText='WAIT ⏳';}}},1000);}
+let cu=JSON.parse(localStorage.getItem('q_user')||'null');if(cu&&cu.un)showBot();
+</script></body></html>
